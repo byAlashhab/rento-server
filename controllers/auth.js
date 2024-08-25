@@ -27,7 +27,7 @@ module.exports = {
           role: "user",
         })
         .then(() => {
-          return res.sendStatus(200);
+          return res.status(200).json({message: "Success"});
         })
         .catch((err) => {
           console.error(err);

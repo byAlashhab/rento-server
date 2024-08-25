@@ -75,4 +75,24 @@ module.exports = {
       return res.status(500).json({ message: "Server Error" });
     }
   },
+  FLUUPDATE: async (req, res) => {
+    const db = getDb();
+    const user = req.user;
+    const { firstname, lastname } = req.body;
+
+    if ((!firstname, !lastname)) {
+      return res.status(400).json({ message: "Missing Data" });
+    }
+
+    try {
+      await db
+        .collection("users")
+        .updateOne({ _id: user._id }, { $set: { firstname, lastname } });
+
+      return res.status(200).json({ message: "User Updated Successfully" });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Server Error" });
+    }
+  },
 };

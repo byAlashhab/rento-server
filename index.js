@@ -47,6 +47,7 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
+    credentials: true,
   })
 );
 
@@ -60,7 +61,7 @@ connectToDb((err) => {
 
 //middlewares
 const authenticated = require("./middlewares/authenticate");
-const isAdmin = require("./middlewares/admin");
+
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
@@ -69,7 +70,7 @@ const placesRouter = require("./routes/place");
 const likedPlaces = require("./routes/likedPlaces");
 
 app.use("/auth", authRouter);
-app.use("/users", authenticated, isAdmin, userRouter);
+app.use("/users", authenticated,userRouter);
 app.use("/articles", articlesRouter);
 app.use("places", authenticated, placesRouter);
 app.use("/liked-places", authenticated, likedPlaces);

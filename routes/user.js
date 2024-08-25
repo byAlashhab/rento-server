@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const usersController = require("../controllers/user");
-
+const isAdmin = require("../middlewares/admin");
 /**
  * @swagger
  * components:
@@ -194,8 +194,9 @@ const usersController = require("../controllers/user");
  */
 
 router
-  .get("/", usersController.GET)
-  .put("/:id", usersController.PUT)
-  .delete("/:id", usersController.DELETE);
+  .get("/", isAdmin, usersController.GET)
+  .put("/:id", isAdmin, usersController.PUT)
+  .put("/", usersController.FLUUPDATE)
+  .delete("/:id", isAdmin, usersController.DELETE);
 
 module.exports = router;
