@@ -62,7 +62,6 @@ connectToDb((err) => {
 //middlewares
 const authenticated = require("./middlewares/authenticate");
 
-
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const articlesRouter = require("./routes/article");
@@ -70,7 +69,7 @@ const placesRouter = require("./routes/place");
 const likedPlaces = require("./routes/likedPlaces");
 
 app.use("/auth", authRouter);
-app.use("/users", authenticated,userRouter);
+app.use("/users", authenticated, userRouter);
 app.use("/articles", articlesRouter);
 app.use("places", authenticated, placesRouter);
 app.use("/liked-places", authenticated, likedPlaces);

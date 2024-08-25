@@ -83,11 +83,15 @@ module.exports = {
     if ((!firstname, !lastname)) {
       return res.status(400).json({ message: "Missing Data" });
     }
+    console.log(user._id);
 
     try {
       await db
         .collection("users")
-        .updateOne({ _id: user._id }, { $set: { firstname, lastname } });
+        .updateOne(
+          { _id: ObjectId.createFromHexString(user._id) },
+          { $set: { firstname, lastname } }
+        );
 
       return res.status(200).json({ message: "User Updated Successfully" });
     } catch (err) {
