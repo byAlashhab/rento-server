@@ -194,7 +194,8 @@ const isAdmin = require("../middlewares/admin");
  */
 
 router
-  .get("/", isAdmin, usersController.GET)
+  .get("/all", isAdmin, usersController.GET)
+  .get("/user-data", usersController.USERDATA)
   .put("/:id", isAdmin, usersController.PUT)
   .put("/", usersController.FLUUPDATE)
   .delete("/:id", isAdmin, usersController.DELETE);

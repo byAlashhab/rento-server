@@ -83,7 +83,6 @@ module.exports = {
     if ((!firstname, !lastname)) {
       return res.status(400).json({ message: "Missing Data" });
     }
-    console.log(user._id);
 
     try {
       await db
@@ -95,6 +94,28 @@ module.exports = {
 
       return res.status(200).json({ message: "User Updated Successfully" });
     } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Server Error" });
+    }
+  },
+  USERDATA: async (req, res) => {
+    const db = getDb();
+    const user = req.user;
+
+    try {
+      const data = await db
+        .collection("users")
+        .findOne({ _id: ObjectId.createFromHexString(user._id) });
+
+      return res
+        .status(200)
+        .json({
+          id: data._id,
+          firstname: data.firstname,
+          lastname: data.lastname,
+          role: data.role,
+        });
+    } catch {
       console.error(err);
       return res.status(500).json({ message: "Server Error" });
     }

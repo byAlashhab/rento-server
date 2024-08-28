@@ -33,25 +33,13 @@ module.exports = {
   GET: async (req, res) => {
     const db = getDb();
 
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = parseInt(req.query.skip) || 0;
-
     try {
       const places = await db
         .collection("places")
         .find({})
-        .skip(skip)
-        .limit(limit)
         .toArray();
 
-      const totalPlaces = await db.collection("places").countDocuments({});
-
-      return res.status(200).json({
-        places,
-        total: totalPlaces,
-        limit,
-        skip,
-      });
+      return res.status(200).json(places);
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Server Error" });
