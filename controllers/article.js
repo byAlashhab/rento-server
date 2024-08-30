@@ -11,25 +11,10 @@ module.exports = {
   GET: async (req, res) => {
     const db = getDb();
 
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = parseInt(req.query.skip) || 0;
-
     try {
-      const articles = await db
-        .collection("articles")
-        .find({})
-        .skip(skip)
-        .limit(limit)
-        .toArray();
+      const articles = await db.collection("articles").find({}).toArray();
 
-      const totalArticles = await db.collection("articles").countDocuments({});
-
-      return res.status(200).json({
-        articles,
-        total: totalArticles,
-        limit,
-        skip,
-      });
+      return res.status(200).json(articles);
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Server Error" });

@@ -30,26 +30,27 @@ const spec = swaggerJsDoc(options);
 
 const app = express();
 app.use("/api", swaggerUI.serve, swaggerUI.setup(spec));
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
 const allowedOrigins = [
-  "http://localhost:5173", //vite
-  "http://localhost:3500", //swagger
+  "http://localhost:5173", // Vite
+  "http://localhost:3500", // Swagger
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 
 connectToDb((err) => {
   if (!err) {
@@ -71,5 +72,5 @@ const likedPlaces = require("./routes/likedPlaces");
 app.use("/auth", authRouter);
 app.use("/users", authenticated, userRouter);
 app.use("/articles", articlesRouter);
-app.use("places", authenticated, placesRouter);
+app.use("/places", authenticated, placesRouter);
 app.use("/liked-places", authenticated, likedPlaces);
